@@ -1,0 +1,37 @@
+.txn__detials
+{
+    padding: 1rem;
+}
+
+.txn__details__row
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.txn__emails
+{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
+.txn__emails .email
+{
+    border-radius: 5px;
+    background-color: rgb(140, 222, 202);
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    width: 45%;
+    margin: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+
+.txn__emails :hover
+{
+    cursor: pointer;
+}

@@ -1,0 +1,57 @@
+.landing__page
+{
+    width: 100vw;
+    height: 100vh;    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(165, 218, 218);
+}
+
+.login__box
+{
+    width: 25%;
+    height: 50%;
+}
+
+.login__form
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login__form Input
+{
+    margin: 8px;
+}
+
+.signup__box
+{
+    width: 25%;
+    height: 50%;
+}
+
+.signUp__form
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.signUp__form Input
+{
+    border-radius:  5px;
+    margin: 8px;
+}
+
+.form__link
+{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.form__link:hover
+{
+    color: blue;
+}
