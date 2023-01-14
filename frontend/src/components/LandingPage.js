@@ -35,7 +35,21 @@ function LandingPage({ doRefresh }) {
   };
 
   const handleSignUp = () => {
-    console.log(signUpDetails);
+    // console.log(signUpDetails);
+    axios
+      .post(BASE_URL + "/register/", {
+        email: signUpDetails.email,
+        name: signUpDetails.name,
+        phone_number: signUpDetails.phone_number,
+      })
+      .then((res) => {
+        // console.log(res);
+        alert("registeration successful");
+        setLogin(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (

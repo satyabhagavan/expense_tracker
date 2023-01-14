@@ -7,6 +7,7 @@ import {
   ModalBody,
   Table,
   ModalFooter,
+  Input,
 } from "reactstrap";
 import "./Details.css";
 import Transactions from "./Transactions";
@@ -18,14 +19,57 @@ function Detail({ userInfo, doRefresh }) {
   const [friends, setFriends] = useState([]);
   const [transactionsByMe, setTransactionsByMe] = useState([]);
   const [transationsInvolved, setTransactionsInvolved] = useState([]);
+  const [txnDeatils, setTxnDetails] = useState({ users: [] });
+  const [refresh, setRefresh] = useState(true);
+  const [email, setEmail] = useState("");
   const [modal, setModal] = useState(false);
   const [txn_modal, setTxn_modal] = useState(false);
-  const [txnDeatils, setTxnDetails] = useState({ users: [] });
+  const [friendModal, setFriendModal] = useState(false);
+
   const toggle = () => {
     setModal(!modal);
   };
+
   const toggleTxn = () => {
     setTxn_modal(!txn_modal);
+  };
+
+  const friendToggle = () => {
+    setFriendModal(!friendModal);
+  };
+
+  const do_Refresh = () => {
+    setRefresh(!refresh);
+  };
+
+  const deleteTxn = (id) => {
+    console.log(id);
+    axios
+      .delete(`http://localhost:8000/api/transaction/${id}`)
+      .then((res) => {
+        console.log(res);
+        do_Refresh();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const submitFrReq = () => {
+    axios
+      .post("http://localhost:8000/api/add_friend/", {
+        friend_email: email,
+        email: userInfo.email,
+      })
+      .then((res) => {
+        console.log(res);
+        do_Refresh();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    friendToggle();
   };
   // console.log(friends);
   const user = userInfo;
@@ -44,7 +88,7 @@ function Detail({ userInfo, doRefresh }) {
       .catch((err) => {
         console.log(err);
       });
-  }, [user.uid]);
+  }, [user.uid, refresh]);
 
   React.useEffect(() => {
     axios
@@ -62,7 +106,7 @@ function Detail({ userInfo, doRefresh }) {
       .catch((err) => {
         console.log(err);
       });
-  }, [user.email]);
+  }, [user.email, refresh]);
 
   return (
     <>
@@ -70,31 +114,42 @@ function Detail({ userInfo, doRefresh }) {
       {/* transactions */}
       {/* friends */}
 
-      <h2>Friends</h2>
-      <Table hover striped>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Email</th>
-            <th>Name</th>
-            <th>Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          {friends.map((each, ind) => {
-            return (
-              <tr key={ind}>
-                <th scope="row">{ind + 1}</th>
-                <td>{each.email}</td>
-                <td>{each.name}</td>
-                <td style={{ color: each.amount >= 0 ? "green" : "red" }}>
-                  ₹{each.amount}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </Table>
+      <div className="friends__heading">
+        <h2>Friends</h2>
+        <h2
+          onClick={() => {
+            friendToggle();
+          }}
+          className="button_styled"
+          style={{ backgroundColor: "navy", color: "red" }}
+        >
+          Add Friends
+        </h2>
+        <Table hover striped>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Email</th>
+              <th>Name</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {friends.map((each, ind) => {
+              return (
+                <tr key={ind}>
+                  <th scope="row">{ind + 1}</th>
+                  <td>{each.email}</td>
+                  <td>{each.name}</td>
+                  <td style={{ color: each.amount >= 0 ? "green" : "red" }}>
+                    ₹{each.amount}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
+      </div>
 
       <div className="transactions_heading">
         <h2>transactions</h2>
@@ -102,10 +157,13 @@ function Detail({ userInfo, doRefresh }) {
           onClick={() => {
             toggleTxn();
           }}
+          className="button_styled"
+          style={{ backgroundColor: "navy", color: "red" }}
         >
           Add Transaction
         </h2>
       </div>
+
       <h3>Done by me</h3>
       <div>
         <Table hover striped>
@@ -124,12 +182,14 @@ function Detail({ userInfo, doRefresh }) {
                   key={ind}
                   onClick={(e) => {
                     e.preventDefault();
-                    console.log(transactionsByMe[ind]);
+                    // console.log(transactionsByMe[ind]);
+                    setTxnDetails(transactionsByMe[ind]);
+                    toggle();
                   }}
                 >
                   <th>{each.id}</th>
                   <th>{each.done_by}</th>
-                  <th>{each.amount}</th>
+                  <th>₹{each.amount}</th>
                   <th>{each.no_of}</th>
                 </tr>
               );
@@ -137,6 +197,7 @@ function Detail({ userInfo, doRefresh }) {
           </tbody>
         </Table>
       </div>
+
       <h3>Involved</h3>
       <div>
         <Table hover striped>
@@ -162,7 +223,7 @@ function Detail({ userInfo, doRefresh }) {
                 >
                   <th>{each.id}</th>
                   <th>{each.done_by}</th>
-                  <th>{each.amount}</th>
+                  <th>₹{each.amount}</th>
                   <th>{each.no_of}</th>
                 </tr>
               );
@@ -182,6 +243,7 @@ function Detail({ userInfo, doRefresh }) {
       >
         <h2>Logout</h2>
       </div>
+      {/* viewing a transaction */}
       <Modal isOpen={modal} toggle={toggle}>
         <ModalHeader toggle={toggle}>txn # {}</ModalHeader>
         <ModalBody>
@@ -217,19 +279,65 @@ function Detail({ userInfo, doRefresh }) {
           <Button color="primary" onClick={toggle}>
             Ok
           </Button>{" "}
-          <Button color="danger" onClick={toggle}>
+          <Button
+            color="danger"
+            onClick={() => {
+              toggle();
+              deleteTxn(txnDeatils.id);
+            }}
+          >
             Delete
           </Button>
         </ModalFooter>
       </Modal>
 
+      {/* creating transaction modal */}
       <Modal isOpen={txn_modal} toggle={toggleTxn} backdrop={false}>
         <div className="txn__modal">
           <Transactions
             friends={friends}
             closeTheModel={toggleTxn}
             userInfo={userInfo}
+            doRefresh={do_Refresh}
           />
+        </div>
+      </Modal>
+
+      {/* creating a friend modal */}
+      <Modal isOpen={friendModal} toggle={friendToggle} backdrop={false}>
+        <div className="txn__detials">
+          <div className="txn__details__row">
+            <p>Payed By</p>
+            <Input
+              placeholder="please enter the email of the user payed"
+              type="email"
+              style={{
+                width: "70%",
+              }}
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+            />
+          </div>
+        </div>
+        <div className="model__footer__buttons">
+          <div
+            className="button_styled"
+            onClick={() => friendToggle()}
+            style={{ backgroundColor: "red" }}
+          >
+            close
+          </div>
+          <div
+            className="button_styled"
+            onClick={() => {
+              submitFrReq();
+            }}
+            style={{ backgroundColor: "blue" }}
+          >
+            Record
+          </div>
         </div>
       </Modal>
 

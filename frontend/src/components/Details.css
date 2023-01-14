@@ -69,6 +69,11 @@
     justify-content: center;
 }
 
+.transaction_form_details
+{
+    width: 100%;
+}
+
 .txn__emails
 {
     width: 100%;
