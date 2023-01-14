@@ -512,7 +512,7 @@ def create_a_friend(request):
             friend_user = users.objects.get(email=data['friend_email'])
         # print(friend_user.__dict__)
     except users.DoesNotExist:
-        response_data['message'] = 'friend user does\'t exist'
+        response_data['message'] = 'user with that email does not exist'
         return JsonResponse(response_data, status=400)
 
     if user.id == friend_user.id:
