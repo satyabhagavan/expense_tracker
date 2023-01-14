@@ -20,7 +20,7 @@
 .txn__emails .email
 {
     border-radius: 5px;
-    background-color: rgb(140, 222, 202);
+    background-color: #8cdeca;
     align-items: center;
     display: flex;
     justify-content: center;
@@ -34,4 +34,53 @@
 .txn__emails :hover
 {
     cursor: pointer;
+}
+
+.model__footer__buttons
+{
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.button_styled
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+    border-radius: 10px;
+    width: 30%;
+    padding: 5px;
+    align-items: center;
+}
+
+.button_styled:hover
+{
+    cursor: pointer;
+}
+
+.transaction_form
+{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.txn__emails
+{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.model__footer__buttons {
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    margin: auto;
 }

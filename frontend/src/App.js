@@ -42,7 +42,8 @@ function App() {
     setRefresh(!refresh);
   };
 
-  console.log(user);
+  // console.log(user);
+
   return (
     <>
       <div>

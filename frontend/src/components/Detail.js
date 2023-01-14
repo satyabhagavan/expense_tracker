@@ -1,5 +1,5 @@
 import axios from "axios";
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   Modal,
@@ -9,24 +9,27 @@ import {
   ModalFooter,
 } from "reactstrap";
 import "./Details.css";
+import Transactions from "./Transactions";
 
 function Detail({ userInfo, doRefresh }) {
   //   console.log(user.user.email);
   //   const [tab, setTab] = React.useState("friends")
-
   const BASE_URL = "http://localhost:8000/api";
-  const [friends, setFriends] = React.useState([]);
-  const [transactionsByMe, setTransactionsByMe] = React.useState([]);
-  const [transationsInvolved, setTransactionsInvolved] = React.useState([]);
-  const [modal, setModal] = React.useState(false);
-  const [txnDeatils, setTxnDetails] = React.useState({ users: [] });
-
+  const [friends, setFriends] = useState([]);
+  const [transactionsByMe, setTransactionsByMe] = useState([]);
+  const [transationsInvolved, setTransactionsInvolved] = useState([]);
+  const [modal, setModal] = useState(false);
+  const [txn_modal, setTxn_modal] = useState(false);
+  const [txnDeatils, setTxnDetails] = useState({ users: [] });
   const toggle = () => {
     setModal(!modal);
   };
+  const toggleTxn = () => {
+    setTxn_modal(!txn_modal);
+  };
   // console.log(friends);
   const user = userInfo;
-  console.log(txnDeatils);
+  // console.log(txnDeatils);
 
   React.useEffect(() => {
     axios
@@ -34,7 +37,7 @@ function Detail({ userInfo, doRefresh }) {
         uid: user.uid,
       })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setTransactionsByMe(res.data.done_by_user);
         setTransactionsInvolved(res.data.involved_by_user);
       })
@@ -80,7 +83,7 @@ function Detail({ userInfo, doRefresh }) {
         <tbody>
           {friends.map((each, ind) => {
             return (
-              <tr>
+              <tr key={ind}>
                 <th scope="row">{ind + 1}</th>
                 <td>{each.email}</td>
                 <td>{each.name}</td>
@@ -93,7 +96,16 @@ function Detail({ userInfo, doRefresh }) {
         </tbody>
       </Table>
 
-      <h2>transactions</h2>
+      <div className="transactions_heading">
+        <h2>transactions</h2>
+        <h2
+          onClick={() => {
+            toggleTxn();
+          }}
+        >
+          Add Transaction
+        </h2>
+      </div>
       <h3>Done by me</h3>
       <div>
         <Table hover striped>
@@ -109,6 +121,7 @@ function Detail({ userInfo, doRefresh }) {
             {transactionsByMe.map((each, ind) => {
               return (
                 <tr
+                  key={ind}
                   onClick={(e) => {
                     e.preventDefault();
                     console.log(transactionsByMe[ind]);
@@ -139,6 +152,7 @@ function Detail({ userInfo, doRefresh }) {
             {transationsInvolved.map((each, ind) => {
               return (
                 <tr
+                  key={ind}
                   onClick={(e) => {
                     e.preventDefault();
                     // console.log(transationsInvolved[ind]);
@@ -190,7 +204,11 @@ function Detail({ userInfo, doRefresh }) {
             </div>
             <div className="txn__emails">
               {txnDeatils.users.map((each, ind) => {
-                return <div className="email">{each}</div>;
+                return (
+                  <div className="email" key={ind}>
+                    {each}
+                  </div>
+                );
               })}
             </div>
           </div>
@@ -204,6 +222,19 @@ function Detail({ userInfo, doRefresh }) {
           </Button>
         </ModalFooter>
       </Modal>
+
+      <Modal isOpen={txn_modal} toggle={toggleTxn} backdrop={false}>
+        <div className="txn__modal">
+          <Transactions
+            friends={friends}
+            closeTheModel={toggleTxn}
+            userInfo={userInfo}
+          />
+        </div>
+      </Modal>
+
+      {/* for making transactions */}
+      {/* <Transactions friends={friends} /> */}
     </>
   );
 }
