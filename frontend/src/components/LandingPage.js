@@ -23,6 +23,7 @@ function LandingPage({ doRefresh }) {
       .then(function (response) {
         console.log(response);
         if (response.status === 200) {
+          alert("login succesful");
           localStorage.setItem("email", loginDetails["email"]);
           localStorage.setItem("uid", response.data.uid);
           setLoginDetails({ email: "", phone_number: "" });
@@ -30,6 +31,7 @@ function LandingPage({ doRefresh }) {
         }
       })
       .catch(function (error) {
+        alert("please check your credentials");
         console.log(error);
       });
   };
@@ -44,7 +46,7 @@ function LandingPage({ doRefresh }) {
       })
       .then((res) => {
         // console.log(res);
-        alert("registeration successful");
+        alert("registration successful");
         setLogin(true);
       })
       .catch((err) => {

@@ -66,9 +66,14 @@ function Detail({ userInfo, doRefresh }) {
         do_Refresh();
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.response);
+        if (err.response.status === 400) {
+          // console.log(err);
+          alert(err.response.data.message);
+        }
       });
 
+    setEmail(""); //as it will be the placeholder again
     friendToggle();
   };
   // console.log(friends);
@@ -164,7 +169,7 @@ function Detail({ userInfo, doRefresh }) {
         </h2>
       </div>
 
-      <h3>Done by me</h3>
+      <h3>My payments</h3>
       <div>
         <Table hover striped>
           <thead>
@@ -241,7 +246,12 @@ function Detail({ userInfo, doRefresh }) {
           doRefresh();
         }}
       >
-        <h2>Logout</h2>
+        <h2
+          className="button_styled"
+          style={{ backgroundColor: "navy", color: "red" }}
+        >
+          Logout
+        </h2>
       </div>
       {/* viewing a transaction */}
       <Modal isOpen={modal} toggle={toggle}>
