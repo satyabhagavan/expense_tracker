@@ -130,31 +130,31 @@ function Detail({ userInfo, doRefresh }) {
         >
           Add Friends
         </h2>
-        <Table hover striped>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Email</th>
-              <th>Name</th>
-              <th>Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            {friends.map((each, ind) => {
-              return (
-                <tr key={ind}>
-                  <th scope="row">{ind + 1}</th>
-                  <td>{each.email}</td>
-                  <td>{each.name}</td>
-                  <td style={{ color: each.amount >= 0 ? "green" : "red" }}>
-                    ₹{each.amount}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </Table>
       </div>
+      <Table hover striped className="friends__table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Email</th>
+            <th>Name</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {friends.map((each, ind) => {
+            return (
+              <tr key={ind}>
+                <th scope="row">{ind + 1}</th>
+                <td>{each.email}</td>
+                <td>{each.name}</td>
+                <td style={{ color: each.amount >= 0 ? "green" : "red" }}>
+                  ₹{each.amount}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </Table>
 
       <div className="transactions_heading">
         <h2>transactions</h2>
@@ -171,7 +171,7 @@ function Detail({ userInfo, doRefresh }) {
 
       <h3>My payments</h3>
       <div>
-        <Table hover striped>
+        <Table hover striped className="transactions__table">
           <thead>
             <tr>
               <th>id</th>
@@ -192,10 +192,10 @@ function Detail({ userInfo, doRefresh }) {
                     toggle();
                   }}
                 >
-                  <th>{each.id}</th>
-                  <th>{each.done_by}</th>
-                  <th>₹{each.amount}</th>
-                  <th>{each.no_of}</th>
+                  <td>{each.id}</td>
+                  <td>{each.done_by}</td>
+                  <td>₹{each.amount}</td>
+                  <td>{each.no_of}</td>
                 </tr>
               );
             })}
@@ -205,7 +205,7 @@ function Detail({ userInfo, doRefresh }) {
 
       <h3>Involved</h3>
       <div>
-        <Table hover striped>
+        <Table hover striped className="transactions__table">
           <thead>
             <tr>
               <th>id</th>
@@ -226,10 +226,10 @@ function Detail({ userInfo, doRefresh }) {
                     toggle();
                   }}
                 >
-                  <th>{each.id}</th>
-                  <th>{each.done_by}</th>
-                  <th>₹{each.amount}</th>
-                  <th>{each.no_of}</th>
+                  <td>{each.id}</td>
+                  <td>{each.done_by}</td>
+                  <td>₹{each.amount}</td>
+                  <td>{each.no_of}</td>
                 </tr>
               );
             })}

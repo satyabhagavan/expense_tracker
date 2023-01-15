@@ -43,6 +43,27 @@
 }
 
 
+.friends__heading
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 20px;
+}
+
+.friends__table
+{
+    width: 80% !important;
+    margin: auto;
+}
+
+.transactions__table
+{
+    width: 80% !important;
+    margin: auto;
+    padding: auto;
+}
+
 .button_styled
 {
     display: flex;
