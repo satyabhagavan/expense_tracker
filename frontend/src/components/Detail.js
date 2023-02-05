@@ -13,8 +13,6 @@ import "./Details.css";
 import Transactions from "./Transactions";
 
 function Detail({ userInfo, doRefresh }) {
-  //   console.log(user.user.email);
-  //   const [tab, setTab] = React.useState("friends")
   const BASE_URL = "http://localhost:8000/api";
   const [friends, setFriends] = useState([]);
   const [transactionsByMe, setTransactionsByMe] = useState([]);
@@ -68,7 +66,7 @@ function Detail({ userInfo, doRefresh }) {
       .catch((err) => {
         console.log(err.response);
         if (err.response.status === 400) {
-          // console.log(err);
+          console.log(err);
           alert(err.response.data.message);
         }
       });
@@ -76,9 +74,7 @@ function Detail({ userInfo, doRefresh }) {
     setEmail(""); //as it will be the placeholder again
     friendToggle();
   };
-  // console.log(friends);
   const user = userInfo;
-  // console.log(txnDeatils);
 
   React.useEffect(() => {
     axios
@@ -86,7 +82,6 @@ function Detail({ userInfo, doRefresh }) {
         uid: user.uid,
       })
       .then((res) => {
-        // console.log(res.data);
         setTransactionsByMe(res.data.done_by_user);
         setTransactionsInvolved(res.data.involved_by_user);
       })
@@ -101,7 +96,6 @@ function Detail({ userInfo, doRefresh }) {
         email: user.email,
       })
       .then((res) => {
-        // console.log(res);
         if (res.status === 200) {
           setFriends(res.data.data);
         } else {
@@ -187,7 +181,6 @@ function Detail({ userInfo, doRefresh }) {
                   key={ind}
                   onClick={(e) => {
                     e.preventDefault();
-                    // console.log(transactionsByMe[ind]);
                     setTxnDetails(transactionsByMe[ind]);
                     toggle();
                   }}
@@ -221,7 +214,6 @@ function Detail({ userInfo, doRefresh }) {
                   key={ind}
                   onClick={(e) => {
                     e.preventDefault();
-                    // console.log(transationsInvolved[ind]);
                     setTxnDetails(transationsInvolved[ind]);
                     toggle();
                   }}
@@ -319,7 +311,7 @@ function Detail({ userInfo, doRefresh }) {
           <div className="txn__details__row">
             <p>Payed By</p>
             <Input
-              placeholder="please enter the email of the user payed"
+              placeholder="please enter the email of the user"
               type="email"
               style={{
                 width: "70%",
@@ -346,7 +338,7 @@ function Detail({ userInfo, doRefresh }) {
             }}
             style={{ backgroundColor: "blue" }}
           >
-            Record
+            Add friend
           </div>
         </div>
       </Modal>
