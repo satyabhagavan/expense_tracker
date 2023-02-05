@@ -10,5 +10,6 @@ urlpatterns = [
     path('add_friend/', views.create_a_friend),
     path('transaction/', views.transaction),
     path('transaction/<int:id>', views.delete_transaction),
-    path('transactions/', views.get_users_transactions)
+    path('transactions/', views.get_users_transactions),
+    path('settle_up/', views.settle_up)
 ]

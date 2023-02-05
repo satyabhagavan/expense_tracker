@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
+from django.db import transaction
 import json
 from datetime import datetime
 
@@ -435,7 +436,6 @@ def get_uid(request):
 @require_http_methods(["POST"])
 def register_user(request):
     data = json.loads(request.body)
-    # data = request.POST
     print(data)
 
     response_data = {}
@@ -538,8 +538,66 @@ def create_a_friend(request):
             status = 400
             return JsonResponse(response_data, status=status)
 
-    # new_user = friends(user=user.id, friends = friend_user.id, amount=0)
-
     response_data['message'] = 'friendship already exits'
     status = 205
     return JsonResponse(response_data, status=status)
+
+@csrf_exempt
+@require_http_methods(["POST"])
+# @transaction.atomic
+def settle_up(request):
+    data = json.loads(request.body)
+    response_data = {}
+
+    if  data.get("uid") is None:
+        response_data['message'] = 'userid is required'
+        return JsonResponse(response_data, status=400)
+
+    if data.get("friend_uid") is None:
+        response_data['message'] = 'friend_uid is required'
+        return JsonResponse(response_data, status=400)
+
+    try:
+        user = users.objects.get(id=data['uid'])
+    except users.DoesNotExist:
+        response_data['message'] = 'user Doesn\'t exist'
+        return JsonResponse(response_data, status = 400)
+
+    try:
+        friend = users.objects.get(id=data['friend_uid'])
+    except users.DoesNotExist:
+        response_data['message'] = 'friend doesn\'t exist'
+        return JsonResponse(response_data, status = 400)
+
+    # getting friend ship objects of the users
+    try:
+        frnship = friends.objects.get(user=user, friends = friend)
+    except friends.DoesNotExist:
+        response_data['message'] = 'friendship doesn\'t exit'
+        return JsonResponse(response_data, status=400)
+
+    try:
+        frnship_other = friends.objects.get(user = friend, friends = user)
+    except friends.DoesNotExist:
+        response_data['message'] = 'friendship doesn\'t exit'
+        return JsonResponse(response_data, status=400)
+
+    if frnship.amount == 0:
+        response_data['message'] = 'Already settled up 🎉 with {}'.format(friend.name)
+        return JsonResponse(response_data,status=200)
+
+
+    frnship.amount = 0
+    frnship_other.amount = 0
+
+    try:
+        frnship.save()
+        frnship_other.save()
+    except Exception as e:
+        response_data['message'] = 'error occured while settling up'
+        response_data['error'] = e
+        print(e)
+        return JsonResponse(response_data, status=400)
+
+    response_data['message'] = 'settled up 🎉 with {}'.format(friend.name)
+    return JsonResponse(response_data, status = 200)
