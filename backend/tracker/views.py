@@ -76,6 +76,7 @@ def get_users_transactions(request):
         temp_data["amount"] = each_txn.transaction_amount
         temp_data["no_of"] = int(each_txn.transaction_among)
         temp_data["done_by"] = user.email
+        temp_data["discription"] = each_txn.transaction_discr
         temp_users = transactions_users_involved.objects.filter(
             tid_id=each_txn.id)
 
@@ -105,6 +106,7 @@ def get_users_transactions(request):
         temp_data["amount"] = txn_details.transaction_amount
         temp_data["no_of"] = int(txn_details.transaction_among)
         temp_data["done_by"] = txn_details.transaction_done_by.email
+        temp_data["discription"] = txn_details.transaction_discr
         temp_users = transactions_users_involved.objects.filter(
             tid_id=each_txn.tid_id)
         users_involved = [txn_details.transaction_done_by.email]
@@ -125,7 +127,7 @@ def get_users_transactions(request):
 
 @csrf_exempt
 @require_http_methods(["POST"])
-def transaction(request):
+def record_transaction(request):
     data = json.loads(request.body)
 
     response_data = {}
@@ -253,9 +255,9 @@ def transaction(request):
                 return JsonResponse(response_data, status=400)
 
     # have to save the transaction in two tables
-    timeNow = datetime.now()
-    transaction_obj = transactions(transaction_time=timeNow, transaction_done_by=payer_info,
-                                   transaction_amount=amount_payed, transaction_among=no_of_users)
+    time_now = datetime.now()
+    transaction_obj = transactions(transaction_time=time_now, transaction_done_by=payer_info,
+                                   transaction_amount=amount_payed, transaction_among=no_of_users,transaction_discr=data["discription"])
     try:
         transaction_obj.save()
     except:
@@ -263,7 +265,7 @@ def transaction(request):
         return JsonResponse(response_data, status=400)
 
     # have to add this transaction details to the respective users
-    txn = transactions.objects.get(transaction_time=timeNow)
+    txn = transactions.objects.get(transaction_time=time_now)
 
     for user in users_involved_objs:
         temp_txnu = transactions_users_involved(tid=txn, uid=user)

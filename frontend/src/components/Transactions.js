@@ -3,14 +3,13 @@ import React, { useEffect, useState } from "react";
 import { Input } from "reactstrap";
 
 function Transactions({ userInfo, friends, closeTheModel, doRefresh }) {
-  //   console.log(friends);
   const [activeState, setActiveState] = useState([]);
   const [userInvolved, setUserInvolved] = useState(false);
   const [amount, setAmount] = useState(0);
   const [email, setEmail] = useState();
+  const [discription, setDiscription] = useState("");
 
   const handleClick = (i) => {
-    // console.log("pressed");
     let temp = { ...activeState };
     temp[i] = !temp[i];
     setActiveState(temp);
@@ -34,10 +33,9 @@ function Transactions({ userInfo, friends, closeTheModel, doRefresh }) {
         amount: parseFloat(amount),
         users_involved: usersInvolved,
         payed_by: email,
+        discription: discription,
       })
       .then((res) => {
-        // console.log(res);
-        // alert("transaction successful");
         doRefresh();
         closeTheModel();
       })
@@ -48,7 +46,6 @@ function Transactions({ userInfo, friends, closeTheModel, doRefresh }) {
     closeTheModel();
   };
 
-  // console.log(friends);
   useEffect(() => {
     //create a map
     let temp = {};
@@ -57,8 +54,6 @@ function Transactions({ userInfo, friends, closeTheModel, doRefresh }) {
     }
 
     setActiveState(temp);
-
-    // console.log("state", temp);
   }, [friends]);
 
   useEffect(() => {
@@ -99,6 +94,20 @@ function Transactions({ userInfo, friends, closeTheModel, doRefresh }) {
                 value={amount}
                 onChange={(e) => {
                   setAmount(e.target.value);
+                }}
+              />
+            </div>
+            <div className="txn__details__row">
+              <p>Discription</p>
+              <Input
+                placeholder="please enter discription"
+                type="text"
+                style={{
+                  width: "70%",
+                }}
+                value={discription}
+                onChange={(e) => {
+                  setDiscription(e.target.value);
                 }}
               />
             </div>

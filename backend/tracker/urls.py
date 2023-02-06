@@ -8,7 +8,7 @@ urlpatterns = [
     path('get_info/', views.get_info),
     path('friends/', views.list_of_friends),
     path('add_friend/', views.create_a_friend),
-    path('transaction/', views.transaction),
+    path('transaction/', views.record_transaction),
     path('transaction/<int:id>', views.delete_transaction),
     path('transactions/', views.get_users_transactions),
     path('settle_up/', views.settle_up)

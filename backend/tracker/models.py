@@ -30,6 +30,7 @@ class transactions(models.Model):
     transaction_done_by = models.ForeignKey(users, on_delete=models.CASCADE)
     transaction_amount = models.DecimalField(max_digits=10, decimal_places=2)
     transaction_among = models.DecimalField(max_digits=10, decimal_places=2)
+    transaction_discr = models.CharField(max_length=200, null=True)
 
 
 class transactions_users_involved(models.Model):

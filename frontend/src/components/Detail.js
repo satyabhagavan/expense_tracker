@@ -172,6 +172,7 @@ function Detail({ userInfo, doRefresh }) {
               <th>Email done by</th>
               <th>Amount</th>
               <th>Among</th>
+              <th>Discription</th>
             </tr>
           </thead>
           <tbody>
@@ -189,6 +190,7 @@ function Detail({ userInfo, doRefresh }) {
                   <td>{each.done_by}</td>
                   <td>₹{each.amount}</td>
                   <td>{each.no_of}</td>
+                  <td>{each.discription}</td>
                 </tr>
               );
             })}
@@ -205,6 +207,7 @@ function Detail({ userInfo, doRefresh }) {
               <th>Email done by</th>
               <th>Amount</th>
               <th>Among</th>
+              <th>Discription</th>
             </tr>
           </thead>
           <tbody>
@@ -222,6 +225,7 @@ function Detail({ userInfo, doRefresh }) {
                   <td>{each.done_by}</td>
                   <td>₹{each.amount}</td>
                   <td>{each.no_of}</td>
+                  <td>{each.discription}</td>
                 </tr>
               );
             })}
@@ -265,6 +269,10 @@ function Detail({ userInfo, doRefresh }) {
             <div className="txn__details__row">
               <p>Transaction among</p>
               <p>{txnDeatils.no_of} people</p>
+            </div>
+            <div className="txn__details__row">
+              <p>discription</p>
+              <p>{txnDeatils.discription}</p>
             </div>
             <div className="txn__emails">
               {txnDeatils.users.map((each, ind) => {
