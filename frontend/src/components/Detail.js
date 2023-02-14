@@ -23,6 +23,7 @@ function Detail({ userInfo, doRefresh }) {
   const [modal, setModal] = useState(false);
   const [txn_modal, setTxn_modal] = useState(false);
   const [friendModal, setFriendModal] = useState(false);
+  const [txnSettle, setTxnSettle] = useState({});
 
   const toggle = () => {
     setModal(!modal);
@@ -74,6 +75,14 @@ function Detail({ userInfo, doRefresh }) {
     setEmail(""); //as it will be the placeholder again
     friendToggle();
   };
+
+  const handleSettleUp = (each) => {
+    // console.log(each);
+    setTxnSettle(each);
+    toggleTxn();
+  };
+  // console.log(txnSettle);
+
   const user = userInfo;
 
   React.useEffect(() => {
@@ -132,6 +141,7 @@ function Detail({ userInfo, doRefresh }) {
             <th>Email</th>
             <th>Name</th>
             <th>Amount</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -144,6 +154,22 @@ function Detail({ userInfo, doRefresh }) {
                 <td style={{ color: each.amount >= 0 ? "green" : "red" }}>
                   ₹{each.amount}
                 </td>
+                {Math.floor(each.amount) === 0 ? (
+                  <td className="settled__up__button">Settled up</td>
+                ) : each.amount < 0 ? (
+                  <td
+                    className="settle__up__button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleSettleUp(each);
+                    }}
+                  >
+                    {" "}
+                    Settle up{" "}
+                  </td>
+                ) : (
+                  <td className="remaind__button"> Remaind </td>
+                )}
               </tr>
             );
           })}
@@ -154,6 +180,7 @@ function Detail({ userInfo, doRefresh }) {
         <h2>transactions</h2>
         <h2
           onClick={() => {
+            setTxnSettle({});
             toggleTxn();
           }}
           className="button_styled"
@@ -309,6 +336,8 @@ function Detail({ userInfo, doRefresh }) {
             closeTheModel={toggleTxn}
             userInfo={userInfo}
             doRefresh={do_Refresh}
+            txnDetails={txnSettle}
+            setTxnSettle={setTxnSettle}
           />
         </div>
       </Modal>

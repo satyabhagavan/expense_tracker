@@ -43,9 +43,9 @@ http:\\localhost:3000\
 - Users can see how much they owe to others and how much others they owe to him.
 - can see list of transactions where user might be involved by paying or someone payed on behalf of him
 - can delete the transaction
+- settling up with the other while having neg balance
 
 ## Further scope
 
 - Improvements on the UI
-- Adding settling up feauture
 - Adding unequal distribution of money

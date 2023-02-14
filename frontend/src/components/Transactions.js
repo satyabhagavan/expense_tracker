@@ -2,12 +2,20 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Input } from "reactstrap";
 
-function Transactions({ userInfo, friends, closeTheModel, doRefresh }) {
+function Transactions({
+  userInfo,
+  friends,
+  closeTheModel,
+  doRefresh,
+  txnDetails,
+  setTxnSettle,
+}) {
   const [activeState, setActiveState] = useState([]);
   const [userInvolved, setUserInvolved] = useState(false);
   const [amount, setAmount] = useState(0);
   const [email, setEmail] = useState();
   const [discription, setDiscription] = useState("");
+  const [settleTxn, setSettleTxn] = useState(false);
 
   const handleClick = (i) => {
     let temp = { ...activeState };
@@ -18,12 +26,16 @@ function Transactions({ userInfo, friends, closeTheModel, doRefresh }) {
   const submitTxn = () => {
     let usersInvolved = [];
 
-    if (userInvolved) usersInvolved.push(userInfo.email);
+    if (settleTxn) {
+      usersInvolved.push(txnDetails.email);
+    } else {
+      if (userInvolved) usersInvolved.push(userInfo.email);
 
-    for (let i = 0; i < friends.length; i++) {
-      if (activeState[i] === true) {
-        console.log(friends[i]);
-        usersInvolved.push(friends[i].email);
+      for (let i = 0; i < friends.length; i++) {
+        if (activeState[i] === true) {
+          console.log(friends[i]);
+          usersInvolved.push(friends[i].email);
+        }
       }
     }
 
@@ -43,6 +55,7 @@ function Transactions({ userInfo, friends, closeTheModel, doRefresh }) {
         console.log(err);
       });
 
+    setTxnSettle({});
     closeTheModel();
   };
 
@@ -59,6 +72,15 @@ function Transactions({ userInfo, friends, closeTheModel, doRefresh }) {
   useEffect(() => {
     //for rendering
   }, [activeState]);
+
+  useEffect(() => {
+    if ("amount" in txnDetails) {
+      setEmail(userInfo.email); //as the user is paying to the other
+      setAmount(txnDetails.amount * -1);
+      setSettleTxn(true);
+      setDiscription(`settle up with ${txnDetails.email}`);
+    }
+  }, [txnDetails, userInfo]);
 
   return (
     <>
@@ -77,6 +99,7 @@ function Transactions({ userInfo, friends, closeTheModel, doRefresh }) {
                 style={{
                   width: "70%",
                 }}
+                readOnly={settleTxn}
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);
@@ -105,6 +128,7 @@ function Transactions({ userInfo, friends, closeTheModel, doRefresh }) {
                 style={{
                   width: "70%",
                 }}
+                readOnly={settleTxn}
                 value={discription}
                 onChange={(e) => {
                   setDiscription(e.target.value);
@@ -113,32 +137,37 @@ function Transactions({ userInfo, friends, closeTheModel, doRefresh }) {
             </div>
           </div>
         </div>
-        <div className="txn__emails">
-          {/* email id of the user */}
-          <div
-            className="email"
-            onClick={() => {
-              setUserInvolved(!userInvolved);
-            }}
-            style={{ background: userInvolved ? "#0ac415" : "#7dd8c1" }}
-          >
-            {userInfo.email}
-          </div>
 
-          {/* email id's of friends of the user */}
-          {friends.map((each, ind) => {
-            return (
-              <div
-                className="email"
-                key={ind}
-                onClick={() => handleClick(ind)}
-                style={{ background: activeState[ind] ? "#0ac415" : "#7dd8c1" }}
-              >
-                {each.email}
-              </div>
-            );
-          })}
-        </div>
+        {!settleTxn && (
+          <div className="txn__emails">
+            {/* email id of the user */}
+            <div
+              className="email"
+              onClick={() => {
+                setUserInvolved(!userInvolved);
+              }}
+              style={{ background: userInvolved ? "#0ac415" : "#7dd8c1" }}
+            >
+              {userInfo.email}
+            </div>
+
+            {/* email id's of friends of the user */}
+            {friends.map((each, ind) => {
+              return (
+                <div
+                  className="email"
+                  key={each.email}
+                  onClick={() => handleClick(ind)}
+                  style={{
+                    background: activeState[ind] ? "#0ac415" : "#7dd8c1",
+                  }}
+                >
+                  {each.email}
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
       <div className="model__footer__buttons">
         <div
