@@ -49,3 +49,4 @@ http:\\localhost:3000\
 
 - Improvements on the UI
 - Adding unequal distribution of money
+- Adding groups for seperate group expenses
