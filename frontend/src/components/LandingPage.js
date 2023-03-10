@@ -34,7 +34,6 @@ function LandingPage({ doRefresh }) {
   };
 
   const handleSignUp = () => {
-    // console.log(signUpDetails);
     axios
       .post(BASE_URL + "/register/", {
         email: signUpDetails.email,
@@ -42,7 +41,6 @@ function LandingPage({ doRefresh }) {
         phone_number: signUpDetails.phone_number,
       })
       .then((res) => {
-        // console.log(res);
         alert("registration successful");
         setLogin(true);
       })
@@ -128,6 +126,7 @@ function LandingPage({ doRefresh }) {
               Create an account to continue
             </h3>
             <form className="signUp__form">
+              <label className="input__label">Name</label>
               <input
                 className="form__input"
                 type="name"
@@ -140,6 +139,7 @@ function LandingPage({ doRefresh }) {
                   }));
                 }}
               />
+              <label className="input__label">Email</label>
               <input
                 className="form__input"
                 type="email"
@@ -152,6 +152,7 @@ function LandingPage({ doRefresh }) {
                   }));
                 }}
               />
+              <label className="input__label">Phone number</label>
               <input
                 className="form__input"
                 type="number"
@@ -164,6 +165,7 @@ function LandingPage({ doRefresh }) {
                   }));
                 }}
               />
+              <label className="input__label">Password</label>
               <input
                 className="form__input"
                 type="password"
@@ -186,15 +188,28 @@ function LandingPage({ doRefresh }) {
               >
                 Submit
               </div>
-              <p
-                className="form__link"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setLogin(true);
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: Row,
+                  color: "rgba(127, 128, 132, 1)",
                 }}
               >
-                Login Instead
-              </p>
+                Already have an account ?&nbsp;&nbsp;
+                <p
+                  className="form__link"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setLogin(true);
+                  }}
+                  style={{
+                    color: "rgba(197, 199, 202, 1)",
+                    cursor: "pointer",
+                  }}
+                >
+                  Login
+                </p>
+              </div>
             </form>
           </div>
         )}
