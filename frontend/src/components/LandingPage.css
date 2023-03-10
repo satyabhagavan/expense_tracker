@@ -1,57 +1,99 @@
 .landing__page
 {
     width: 100vw;
-    height: 100vh;    
+    height: 100vh;
+    background-color: rgb(19 19 25);
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(165, 218, 218);
+    /* background-color: white; */
 }
 
-.login__box
+.login__box, .signup__box
 {
-    width: 25%;
-    height: 50%;
-}
-
-.login__form
-{
+    position: absolute;
+    border: 2px solid rgb(123 123 123);
+    border-radius: 8px;
+    background-color: #27292D;
+    width: 34%;
+    min-width: 350px;
+    height: 55%;
+    min-height: 300px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
-.login__form Input
+.login__heading
 {
-    margin: 8px;
-}
-
-.signup__box
-{
-    width: 25%;
-    height: 50%;
-}
-
-.signUp__form
-{
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    letter-spacing: 0.03em;
+    color: #6B6C70;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
 }
 
-.signUp__form Input
+.login__title
 {
-    border-radius:  5px;
-    margin: 8px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 22px;
+    color: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.form__link
+.login__form, .signUp__form
 {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.input__label
+{
+    width: 100%;
+    color: rgba(197, 199, 202, 1);
+} 
+
+.submit__button
+{
+    width: 100%;
+    background: #4A96FF;
+    height: 2rem;
+    border-radius: 4px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    color: #FFFFFF;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0.3rem;
+
     cursor: pointer;
-    text-decoration: underline;
 }
 
-.form__link:hover
+.form__input
 {
-    color: blue;
+    width: 100%;
+    height: 2.25rem;
+    margin: 0.25rem;
+    border: 2px solid rgb(123 123 123);
+    border-radius: 8px;
+    background-color: #27292D;
+    color: #FFF;    
+    padding: 10px;
 }

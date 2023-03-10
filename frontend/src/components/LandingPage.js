@@ -1,12 +1,9 @@
 import React from "react";
 import "./LandingPage.css";
-import { Button, Input, FormGroup } from "reactstrap";
-// const axios = require("axios").default;
+import { Row } from "reactstrap";
 import axios from "axios";
 
 function LandingPage({ doRefresh }) {
-  //   const login = true;
-
   const BASE_URL = "http://localhost:8000/api";
 
   const [login, setLogin] = React.useState(true);
@@ -60,10 +57,15 @@ function LandingPage({ doRefresh }) {
         {login === true ? (
           <div className="login__box">
             <form className="login__form">
-              <h3>Login</h3>
-              <Input
+              <h3 className="login__heading">WELCOME BACK</h3>
+              <h3 className="login__title" style={{ marginBottom: "20px" }}>
+                Log into your account
+              </h3>
+              <label className="input__label">Email or Username</label>
+              <input
+                className="form__input"
                 type="email"
-                placeholder="email"
+                placeholder="Enter your email or username"
                 value={loginDetails.email}
                 onChange={(e) => {
                   setLoginDetails((old_state) => ({
@@ -72,9 +74,11 @@ function LandingPage({ doRefresh }) {
                   }));
                 }}
               />
-              <Input
-                type="number"
-                placeholder="phone number"
+              <label className="input__label">Password</label>
+              <input
+                className="form__input"
+                type="password"
+                placeholder="Enter your password"
                 value={loginDetails.phone_number}
                 onChange={(e) => {
                   setLoginDetails((old_state) => ({
@@ -84,7 +88,7 @@ function LandingPage({ doRefresh }) {
                 }}
               />
 
-              <Button
+              <div
                 className="submit__button"
                 onClick={(e) => {
                   e.preventDefault();
@@ -92,87 +96,106 @@ function LandingPage({ doRefresh }) {
                 }}
               >
                 Submit
-              </Button>
-              <p
-                className="form__link"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setLogin(false);
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: Row,
+                  color: "rgba(127, 128, 132, 1)",
                 }}
               >
-                Register Instead
-              </p>
-            </form>
-          </div>
-        ) : (
-          <div className="signup__box">
-            <FormGroup>
-              <form className="signUp__form">
-                <Input
-                  type="name"
-                  placeholder="name"
-                  value={signUpDetails.name}
-                  onChange={(e) => {
-                    setSignUpDetails((old_state) => ({
-                      ...old_state,
-                      name: e.target.value,
-                    }));
-                  }}
-                />
-                <Input
-                  type="email"
-                  placeholder="email"
-                  value={signUpDetails.email}
-                  onChange={(e) => {
-                    setSignUpDetails((old_state) => ({
-                      ...old_state,
-                      email: e.target.value,
-                    }));
-                  }}
-                />
-                <Input
-                  type="number"
-                  placeholder="phone number"
-                  value={signUpDetails.phone_number}
-                  onChange={(e) => {
-                    setSignUpDetails((old_state) => ({
-                      ...old_state,
-                      phone_number: e.target.value,
-                    }));
-                  }}
-                />
-                <Input
-                  type="password"
-                  placeholder="password"
-                  value={signUpDetails.password}
-                  onChange={(e) => {
-                    setSignUpDetails((old_state) => ({
-                      ...old_state,
-                      password: e.target.value,
-                    }));
-                  }}
-                />
-
-                <Button
-                  className="submit__button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleSignUp();
-                  }}
-                >
-                  Submit
-                </Button>
+                Not registered yet ?&nbsp;&nbsp;
                 <p
                   className="form__link"
                   onClick={(e) => {
                     e.preventDefault();
-                    setLogin(true);
+                    setLogin(false);
+                  }}
+                  style={{
+                    color: "rgba(197, 199, 202, 1)",
+                    cursor: "pointer",
                   }}
                 >
-                  Login Instead
+                  Register
                 </p>
-              </form>
-            </FormGroup>
+              </div>
+            </form>
+          </div>
+        ) : (
+          <div className="signup__box">
+            <h3 className="login__heading">SIGN UP</h3>
+            <h3 className="login__title" style={{ marginBottom: "20px" }}>
+              Create an account to continue
+            </h3>
+            <form className="signUp__form">
+              <input
+                className="form__input"
+                type="name"
+                placeholder="name"
+                value={signUpDetails.name}
+                onChange={(e) => {
+                  setSignUpDetails((old_state) => ({
+                    ...old_state,
+                    name: e.target.value,
+                  }));
+                }}
+              />
+              <input
+                className="form__input"
+                type="email"
+                placeholder="email"
+                value={signUpDetails.email}
+                onChange={(e) => {
+                  setSignUpDetails((old_state) => ({
+                    ...old_state,
+                    email: e.target.value,
+                  }));
+                }}
+              />
+              <input
+                className="form__input"
+                type="number"
+                placeholder="phone number"
+                value={signUpDetails.phone_number}
+                onChange={(e) => {
+                  setSignUpDetails((old_state) => ({
+                    ...old_state,
+                    phone_number: e.target.value,
+                  }));
+                }}
+              />
+              <input
+                className="form__input"
+                type="password"
+                placeholder="password"
+                value={signUpDetails.password}
+                onChange={(e) => {
+                  setSignUpDetails((old_state) => ({
+                    ...old_state,
+                    password: e.target.value,
+                  }));
+                }}
+              />
+
+              <div
+                className="submit__button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleSignUp();
+                }}
+              >
+                Submit
+              </div>
+              <p
+                className="form__link"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setLogin(true);
+                }}
+              >
+                Login Instead
+              </p>
+            </form>
           </div>
         )}
       </div>
