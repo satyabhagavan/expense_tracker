@@ -16,8 +16,6 @@ function App() {
     name: "",
   });
 
-  // console.log(user);
-
   React.useEffect(() => {
     axios
       .post(BASE_URL + "/get_info/", {
@@ -25,7 +23,6 @@ function App() {
         email: user_loggedIn_email,
       })
       .then(function (response) {
-        // console.log(response);
         if (response.status === 200) {
           setUser(response.data.data);
         }
@@ -41,8 +38,6 @@ function App() {
     window.location.reload();
     setRefresh(!refresh);
   };
-
-  // console.log(user);
 
   return (
     <>
